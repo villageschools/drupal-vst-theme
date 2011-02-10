@@ -1,0 +1,110 @@
+/* Menus */
+
+#main-menu, .menu
+{
+	-webkit-border-bottom-right-radius: 8px;
+	-webkit-border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomleft: 8px;
+	-moz-border-radius-bottomright: 8px;
+	width: 258px;
+	display: inline-block;
+	vertical-align: top;
+	background: url(images/nav/VSI-nav-BGandline4.png);
+	margin-bottom: -20px;
+}
+
+.block-user .menu
+{
+    background: none;
+}
+
+#primary_menu ul
+{
+	margin: 0px;
+	-webkit-padding-start: 0px;
+	padding: 0px;
+}
+
+#primary_menu ul li,
+#primary_menu ul li.expanded ul li,
+#primary_menu ul li.leaf
+{
+    margin: 0px;
+	list-style-type: none;
+	list-style-image: none;
+	padding: 0px;
+}
+
+#primary_menu ul li a,
+#primary_menu ul li.expanded ul li a
+{
+	color: rgb(15, 57, 99);
+	border-bottom: 1px solid #C79332;
+	border-top: 1px solid #ffcd72;
+	overflow: hidden;
+}
+
+#primary_menu ul li
+{
+/*    background: #f8ab1d;*/
+	width: 251px;
+}
+
+#primary_menu ul li:hover,
+#primary_menu ul li.active-trail,
+body#page-node-1 #primary_menu ul li.first
+{
+    background-color: #fac055;
+    background-image: none;
+}
+
+#primary_menu a.active,
+body#page-node-1 #primary_menu ul li.first a,
+#primary_menu ul li.expanded ul li a.active
+{
+	border-top: 1px solid #B1690B;
+	border-bottom: 1px solid #FAB639;
+}
+
+#primary_menu ul a
+{
+    display: block;
+	text-decoration: none;
+	padding: 10px 0px 10px 20px;
+	font: 11.5pt Trebuchet MS, Arial, Verdana;
+	font-weight:700;
+	color: rgb(15, 57, 99);
+}
+
+#primary_menu a.active,
+#primary_menu ul li.expanded ul li a.active
+{
+	color: #042241;
+}
+
+#primary_menu ul li.expanded ul li a
+{
+    font-size: 11pt;
+	padding: 5px 0px 5px 40px;
+}
+
+#primary_menu ul li.expanded
+{
+    background-image: url(../../../../misc/menu-expanded.png);
+    background-repeat: no-repeat;
+    background-position: 8px 16px;
+}
+
+#primary_menu ul li.collapsed
+{
+    background-image: url(../../../../misc/menu-collapsed.png);
+    background-repeat: no-repeat;
+    background-position: 8px 16px;
+}
+
+#primary_menu ul li.first a,
+body#page-node-1 #primary_menu ul li.first a
+{
+    border-top: none;
+}
+

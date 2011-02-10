@@ -1,0 +1,12 @@
+; $Id$
+name = VST
+description = CSS-based custom theme to mimick the current look of villageschools.org
+version = VERSION
+core = 6.x
+engine = phptemplate
+
+; Information added by drupal.org packaging script on 2009-05-13
+version = "0.1"
+project = "drupal"
+datestamp = "1242243950"
+
