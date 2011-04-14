@@ -22,10 +22,10 @@ function school(info)
 school.prototype.display = function()
 {
     var html = "<div class=\"school-bubble\"><strong>" + this.title + "</strong><br />" + 
-                    (this.picture != "" ? "<img class=\"school-photo\" src=\"" + DIR_WEB_ROOT + "/" + this.picture + "\" /><br />" : "") + 
+                    (this.picture != "" ? "<img class=\"school-photo\" style=\"height: 150px\" src=\"" + DIR_WEB_ROOT + "/" + this.picture + "\" /><br />" : "") + 
                     this.teaser + "<br /><br />" + 
 //                    "<a href=\"javascript:map.setZoom(map.getZoom() + 1);\">zoom</a>" +
-                    "<a href=\"" + DIR_WEB_ROOT + "/schools/" + this.name + "\">more info &raquo;</a>" +
+                    "<a href=\"" + DIR_WEB_ROOT + "/schools/" + this.name.replace(/[^\w]/g, "") + "\">more info &raquo;</a>" +
                "</div>";
 
     this.marker.openInfoWindowHtml(html);

@@ -1,21 +1,21 @@
 function more_tweets()
 {
-	$("#sidebar-right").addClass("shadowed").animate( { height:"500px"}, 500, null, function() 
-																					{ 
-																						$("#twitter_update_list").css("height", "380px");
-																						$("#twitter_update_list > li").css("margin-bottom", "10px");
-																						$("#more_tweets").html("less").attr("href", "javascript:less_tweets();"); 
-																					} );
+	$("#twitter_div").addClass("shadowed").animate( { height:"500px"}, 500, null, function() 
+	{ 
+		$("#twitter_update_list").css("height", "400px");
+		$("#twitter_update_list > li").css("margin-bottom", "10px");
+		$("#more_tweets").html("less").attr("href", "javascript:less_tweets();"); 
+	});
 }
 
 function less_tweets()
 {
 	$("#twitter_update_list > li").css("margin-bottom", "2000px");
-	$("#sidebar-right").animate( { height:"259px"}, 500, null, function() 
-															   { 
-																	$("#more_tweets").html("more").attr("href", "javascript:more_tweets();"); 
-																	$("#sidebar-right").removeClass("shadowed"); 
-															   } );
+	$("#twitter_div").animate( { height:"234px"}, 500, null, function() 
+														   { 
+																$("#more_tweets").html("more").attr("href", "javascript:more_tweets();"); 
+																$("#twitter_div").removeClass("shadowed"); 
+														   } );
 }
 
 function gotoMap(iwloc)

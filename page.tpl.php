@@ -13,8 +13,10 @@
 	// Utils used throughout
 	require_once "utils.php";
 
-    define ("DIR_WEB_ROOT",      preg_replace("/\/$/", "", $variables["base_path"]));
-    define ("DIR_WEB_THEMEROOT", $variables["base_path"] . $variables["directory"]);
+    global $base_url;
+    global $base_path;
+    
+    define ("DIR_WEB_THEMEROOT", $base_url . "/" . $variables["directory"]);
     define ("DIR_WEB_IMAGES",    DIR_WEB_THEMEROOT . "/images");
     define ("DIR_WEB_STYLES",    DIR_WEB_THEMEROOT . "/css");
     define ("DIR_WEB_SCRIPTS",   DIR_WEB_THEMEROOT . "/scripts");
@@ -63,9 +65,9 @@
 
                 # Redirect user to success page
                 if ($lng == "fr")
-                    $url = DIR_WEB_ROOT . "/thankyou_fr.html";
+                    $url = $base_url . "/thankyou_fr.html";
                 else
-                	$url = DIR_WEB_ROOT . "/thankyou.html";
+                	$url = $base_url . "/thankyou.html";
             }
             else
             {
@@ -102,7 +104,7 @@
     <link href='http://fonts.googleapis.com/css?family=Molengo&subset=latin' rel='stylesheet' type='text/css'>    
     
     <script type="text/javascript">
-        var DIR_WEB_ROOT = "<?php print DIR_WEB_ROOT; ?>";
+        var DIR_WEB_ROOT = "<?php print $base_url; ?>";
     </script>
 <?php
     switch ($page)
@@ -141,20 +143,20 @@
 ?>
   <script type="text/javascript" src="<?php print DIR_WEB_SCRIPTS; ?>/vsi.js"></script>
 </head>
-<body id="<?php print $variables["template_files"][1]; ?>">
+<body id="<?php print $variables["template_files"][1]; ?>" class="<?php print $variables["node"]->type; ?>-content">
     <div id="links-bar-wrapper">
     	<div id="links-bar">
     		<div id="language-selection">
     			<?php print $header ?>
     		</div>
     		<div id="small-links">
-    			<a href="<?php print DIR_WEB_ROOT; ?>/index.html">HOME</a> | <a href="<?php print DIR_WEB_ROOT; ?>/donate.html">DONATE</a><!-- | <a href="<?php print DIR_WEB_ROOT; ?>/linklibrary.html">LINKS</a> -->
+    			<a href="<?php print $base_url; ?>/index.html">HOME</a> | <a href="<?php print $base_url; ?>/donate.html">DONATE</a><!-- | <a href="<?php print $base_url; ?>/linklibrary.html">LINKS</a> -->
     		</div>
     	</div>
     </div>
 <div id="site-wrapper">
 	<div id="page-wrapper">
-		<a href="<?php print DIR_WEB_ROOT; ?>"><div id="header-bar"></div></a>
+		<a href="<?php print $base_url; ?>"><div id="header-bar"></div></a>
 		<div id="main-menu">
 			<?php if ($left) print $left ?>
             <?php if (isset($primary_links)) : ?>
@@ -165,7 +167,7 @@
 			<?php //if (isset($primary_links)) { print theme('links', $primary_links, array('class' => 'main-menu', 'id' => 'navlist')) } ?>
 		    <?php if (isset($secondary_links)) { ?><?php print theme('links', $secondary_links, array('class' => 'links', 'id' => 'subnavlist')) ?><?php } ?>
 			<div id="donate">
-				<a href="<?php print DIR_WEB_ROOT; ?>/donate.html"><img border="0" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"></a>
+				<a href="<?php print $base_url; ?>/donate.html"><img border="0" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"></a>
 			</div>
 			<div id="email-form">
                 Sign up for our newsletter to get the latest updates.<br /><br />
@@ -183,9 +185,9 @@
 	{
 ?>
     			<ul>
-    				<li><a href="<?php print DIR_WEB_ROOT; ?>/letters.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front1.jpg" alt="" /></a></li>
-    				<li><a href="<?php print DIR_WEB_ROOT; ?>/scholarships.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front2.jpg" alt="" /></a></li>
-    				<li><a href="<?php print DIR_WEB_ROOT; ?>/googleearthtour.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front3.jpg" alt="" /></a></li>
+    				<li><a href="<?php print $base_url; ?>/letters.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front1.jpg" alt="" /></a></li>
+    				<li><a href="<?php print $base_url; ?>/scholarships.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front2.jpg" alt="" /></a></li>
+    				<li><a href="<?php print $base_url; ?>/googleearthtour.html"><img src="<?php print DIR_WEB_IMAGES; ?>/front3.jpg" alt="" /></a></li>
     			</ul>
 <?php
 	}
@@ -193,24 +195,24 @@
             </div><?php
 
 	if ($right) 
-		print "<div id=\"sidebar-right\">" . $right . "</div>";
+		print "<div id=\"top-right\">" . $right . "</div>";
 	else
 	{
-		$letterimg = array("susannfriend.jpg", "hezroni.jpg", "littlekid.jpg", "yusuphnfriend.jpg");
-		$learnimg = array(/*"assembly.jpg"*/"mpepo.jpg", "mattteaching.jpg", "walkinghome.jpg", "zamu.jpg");
+		$letterimg = array("susannfriend.jpg", "hezroni.jpg", /*"littlekid.jpg", "yusuphnfriend.jpg",*/ "helen.jpg", "kisinga-boy.jpg", "students_walking.jpg");
+		$learnimg = array(/*"assembly.jpg"*/"mpepo.jpg", "mattteaching.jpg", "walkinghome.jpg", /*"zamu.jpg"*/ "lukima-boys.jpg");
 		$possibilities = array(
 		"<div id=\"box-learn-wrapper\">
 			<div id=\"box-learn\">
-				<a href=\"" . DIR_WEB_ROOT . "/videos/vsi_ppt.html\"><h1>About VSI</h1></a>
-				<a href=\"" . DIR_WEB_ROOT . "/letters.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $learnimg[rand(0, count($learnimg) - 1)] . "\"></a>
-				<a href=\"" . DIR_WEB_ROOT . "/videos/vsi_ppt.html\">Learn about our mission with this 5 mn video &raquo;</a>
+				<a href=\"" . $base_url . "/videos/vsi_ppt.html\"><h1>About VSI</h1></a>
+				<a href=\"" . $base_url . "/videos/vsi_ppt.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $learnimg[rand(0, count($learnimg) - 1)] . "\"></a>
+				<a href=\"" . $base_url . "/videos/vsi_ppt.html\">Learn about our mission with this 5 mn video &raquo;</a>
 			</div>
 		</div>",
 		"<div id=\"box-letters-wrapper\">
 			<div id=\"box-letters\">
-				<a href=\"" . DIR_WEB_ROOT . "/letters.html\"><h1>Updates</h1></a>
-				<a href=\"" . DIR_WEB_ROOT . "/letters.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $letterimg[rand(0, count($letterimg) - 1)] . "\"></a>
-				<a href=\"" . DIR_WEB_ROOT . "/letters.html\">Check out the blog for recent updates &raquo;</a>
+				<a href=\"" . $base_url . "/letters.html\"><h1>Updates</h1></a>
+				<a href=\"" . $base_url . "/letters.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $letterimg[rand(0, count($letterimg) - 1)] . "\"></a>
+				<a href=\"" . $base_url . "/letters.html\">Check out the blog for recent updates &raquo;</a>
 			</div>
 		</div>");
 
@@ -237,7 +239,7 @@
     	        print $content; 
 			    global $user;
 			    if ($user->uid && isset($_GET["q"]) && preg_match("/node\/(\d+)$/", $_GET["q"], $matches))
-			        print "<a class=\"page-edit-link button\" href=\"" . DIR_WEB_ROOT . "/node/" . $matches[1] . "/edit?destination=" . ltrim(preg_replace("/^" . str_replace("/", "\\/", DIR_WEB_ROOT) . "/", "", $_SERVER["REQUEST_URI"]), "/") . "\">edit &raquo;</a>"; 
+			        print "<a class=\"page-edit-link button\" href=\"" . $base_url . "/node/" . $matches[1] . "/edit?destination=" . ltrim(preg_replace("/^" . str_replace("/", "\\/", $base_path) . "/", "", $_SERVER["REQUEST_URI"]), "/") . "\">edit &raquo;</a>"; 
 			?>
 		</div>
 	</div>
@@ -247,6 +249,11 @@
         Village Schools International<br />
         Box 1929<br />
         Tomball, TX 77377
+    </div>
+    <div>
+        Village Schools Canada<br />
+        223 Hartwood Avenue<br />
+        Waterloo, Ontario N2J 1B2
     </div>
     <div>
         Village Schools Tanzania<br />
@@ -260,7 +267,7 @@
     <div style="border-left: 1px dotted white; padding-left: 25px; margin-left: 25px;">
         <b>
             <a href="donate.html">Donate to VSI</a><br />
-            <a href="contact.html">Contact VSI</a><br />
+            <a href="contact.html">More Contact Info</a><br />
             <a href="aboutvsi.html">About VSI</a><br />
         </b>
     </div>

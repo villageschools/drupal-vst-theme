@@ -2,10 +2,12 @@
     // $Id: node.tpl.php,v 1.7 2007/08/07 08:39:36 goba Exp $
     // Try to get the friendly URL for this post
     
+    global $base_url;
+    
     if (property_exists($node, "path"))
-        $url = $variables["base_url"] . $node->path;
+        $url = $base_url . "/" . $node->path;
     else
-        $url = $variables["base_url"] . "node/" . $node->nid;
+        $url = $base_url . "/node/" . $node->nid;
 ?>
   <div class="blog-post">
     <?php print "<span class=\"blog-post-date\">" . date("m/d/Y", $node->created); ?></span>

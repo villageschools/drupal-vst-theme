@@ -8,5 +8,6 @@
     // the bare content if the ID is 80. Clearly not the right way to do this, but it works. 
 
     header("application/vnd.google-earth.kml+xml");
+    header("Content-Disposition: attachment; filename=\"vsi-google-earth-tour.kml\"");
     die($content);
 ?>
