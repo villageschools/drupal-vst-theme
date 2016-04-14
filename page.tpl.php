@@ -37,44 +37,52 @@
             else
                 $ClientIP = $_SERVER['REMOTE_ADDR'];
 
-            $email = $_REQUEST['email'];
+            $name     = $_REQUEST['name'];
+            $email    = $_REQUEST['email'];
+            $honeypot = $_REQUEST['title'];
             
-            if (preg_match("/^\b[A-Z0-9._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}\b$/i", $email))
+            if ($honeypot == "")
             {
-                $lng = (isset($_GET['lng']) ? $_GET['lng'] : "en");
-
-                if (defined("EMAIL_SIGNUP_" . strtoupper($lng)))
-                    $emailTo = constant("EMAIL_SIGNUP_" . strtoupper($lng));
-                else
-                    $emailTo = EMAIL_SIGNUP_EN;
-  
-                if (!mail($emailTo, 
-                          "Email List Signup",
-                          "email: " . $email . "\n\n" .
-                          "This user signed up from the " . ($lng == "en" ? "English" : "French") . " site.",
-                          "From: " . $email . "\n" .
-                          "MIME-Version: 1.0\n" .
-                          "Content-type: text/plain; charset=\"utf-8\"\n" .
-                          "Content-transfer-encoding: 8bit\n") && DEBUG)
+                if (preg_match("/^\b[A-Z0-9._%-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}\b$/i", $email))
                 {
-                    $msg = "Oops! There seems to have been a problem signing you up for our newsletter. Please try again.";
+                    $lng = (isset($_GET['lng']) ? $_GET['lng'] : "en");
+
+                    if (defined("EMAIL_SIGNUP_" . strtoupper($lng)))
+                        $emailTo = constant("EMAIL_SIGNUP_" . strtoupper($lng));
+                    else
+                        $emailTo = EMAIL_SIGNUP_EN;
+  
+                    if (!mail($emailTo, 
+                              "Email List Signup",
+                              "Name: " . $name . "\n" . 
+                              "Email: " . $email . "\n\n" .
+                              "This user signed up from the " . ($lng == "en" ? "English" : "French") . " site.",
+                              "From: " . $email . "\n" .
+                              "MIME-Version: 1.0\n" .
+                              "Content-type: text/plain; charset=\"utf-8\"\n" .
+                              "Content-transfer-encoding: 8bit\n") && DEBUG)
+                    {
+                        $msg = "Oops! There seems to have been a problem signing you up for our newsletter. Please try again.";
+                        $url = "error.html";
+                        $msgtype = "error";
+                    }
+                          
+
+                    # Redirect user to success page
+                    if ($lng == "fr")
+                        $url = $base_url . "/thankyou_fr.html";
+                    else
+                    	$url = $base_url . "/thankyou.html";
+                }
+                else
+                {
+                    $msg = "Oops! Your email address does not appear to be valid. Please try again.";
                     $url = "error.html";
                     $msgtype = "error";
                 }
-                          
-
-                # Redirect user to success page
-                if ($lng == "fr")
-                    $url = $base_url . "/thankyou_fr.html";
-                else
-                	$url = $base_url . "/thankyou.html";
             }
             else
-            {
-                $msg = "Oops! Your email address does not appear to be valid. Please try again.";
-                $url = "error.html";
-                $msgtype = "error";
-            }
+                $url = $base_url . "/thankyou.html";
 
 	        break;
         }
@@ -97,6 +105,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="<?php print $language->language ?>" xml:lang="<?php print $language->language ?>" dir="<?php print $language->dir ?>">
 <head>
     <?php print $head ?>
+    <meta name="google-site-verification" content="9YYIfavw_0s2JUnZw5O8GxhbQcOWrVtmXTsjn2K1Z3U" />
     <title><?php print $head_title ?></title>
     <?php print $styles ?>
     <?php print $scripts ?>
@@ -106,13 +115,13 @@
     <script type="text/javascript">
         var DIR_WEB_ROOT = "<?php print $base_url; ?>";
     </script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <?php
     switch ($page)
     {
         case ("page-node-" . PAGE_INDEX):
         {
 ?>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script type="text/javascript" src="<?php print DIR_WEB_SCRIPTS; ?>/easySlider1.7d.js"></script>
     <script type="text/javascript">
         $(document).ready(function()
@@ -127,16 +136,6 @@
         
     </script>
 <?php   
-            break;
-        }
-      
-        case ("page-node-" . PAGE_LOCATIONS):
-        {
-?>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-  <script src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAGFOn68HIlKzqshBJrhNG1BRPb3xU1s67gvNRONNn1xbNvomQzBSOxOd0QSqwQtbm_4vAOfnJhuDb3g&sensor=false" type="text/javascript"></script>
-  <script type="text/javascript" src="<?php print DIR_WEB_SCRIPTS; ?>/map.js"></script>
-<?php          
             break;
         }
     }
@@ -172,9 +171,18 @@
 			<div id="email-form">
                 Sign up for our newsletter to get the latest updates.<br /><br />
                 <form action="./" method="post">
-                    <strong>Email:</strong> <input type="text" name="email"><br /><br />
-                    <input type="hidden" name="action" value="signup" />
-                    <input class="button" type=submit name="sub" value="Subscribe &raquo;">
+                    <div class="signup-wrapper">
+                        <div class="address-wrapper">
+                            <strong>Title: </strong>
+                            <input type="text" name="title" />
+                        </div>
+                        <strong>Name:</strong> <input type="text" name="name"><br />
+                        <strong>Email:</strong> <input type="text" name="email"><br /><br />
+                        <input type="hidden" name="action" value="signup" />
+                    </div>
+                    <div class="subscribe-wrapper">
+                        <input class="button" type="submit" value="Subscribe &raquo;">
+                    </div>
                 </form>
 			</div>
 		</div>
@@ -198,14 +206,14 @@
 		print "<div id=\"top-right\">" . $right . "</div>";
 	else
 	{
-		$letterimg = array("susannfriend.jpg", "hezroni.jpg", /*"littlekid.jpg", "yusuphnfriend.jpg",*/ "helen.jpg", "kisinga-boy.jpg", "students_walking.jpg");
-		$learnimg = array(/*"assembly.jpg"*/"mpepo.jpg", "mattteaching.jpg", "walkinghome.jpg", /*"zamu.jpg"*/ "lukima-boys.jpg");
+		$letterimg = array("susannfriend.jpg", /*"hezroni.jpg", "littlekid.jpg", "yusuphnfriend.jpg",*/ "helen.jpg", "kisinga-boy.jpg", "students_walking.jpg");
+		$learnimg = array(/*"assembly.jpg"*/"mpepo.jpg", /*"mattteaching.jpg",*/ "walkinghome.jpg", /*"zamu.jpg"*/ "lukima-boys.jpg");
 		$possibilities = array(
 		"<div id=\"box-learn-wrapper\">
 			<div id=\"box-learn\">
-				<a href=\"" . $base_url . "/videos/vsi_ppt.html\"><h1>About VSI</h1></a>
-				<a href=\"" . $base_url . "/videos/vsi_ppt.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $learnimg[rand(0, count($learnimg) - 1)] . "\"></a>
-				<a href=\"" . $base_url . "/videos/vsi_ppt.html\">Learn about our mission with this 5 mn video &raquo;</a>
+				<a href=\"" . $base_url . "/videoupdates.html\"><h1>About VSI</h1></a>
+				<a href=\"" . $base_url . "/videoupdates.html\"><img src=\"" . DIR_WEB_IMAGES . "/" . $learnimg[rand(0, count($learnimg) - 1)] . "\"></a>
+				<a href=\"" . $base_url . "/videoupdates.html\">Learn about our mission with this 5 mn video &raquo;</a>
 			</div>
 		</div>",
 		"<div id=\"box-letters-wrapper\">
@@ -261,19 +269,38 @@
         Mafinga, Tanzania    
     </div>
     <div>
+        Village Schools Malawi<br />
+        Box 477<br />
+        Zomba, Malawi
+    </div>
+    <div>
+        Village Schools Zambia<br />
+        Box 72685<br />
+        Ndola, Zambia
+    </div>
+    <div>
         <a href="mailto:steve.vinton@villageschools.org">steve.vinton@villageschools.org</a><br />
         <a href="mailto:susan.vinton@villageschools.org">susan.vinton@villageschools.org</a>
     </div>
     <div style="border-left: 1px dotted white; padding-left: 25px; margin-left: 25px;">
         <b>
-            <a href="donate.html">Donate to VSI</a><br />
-            <a href="contact.html">More Contact Info</a><br />
-            <a href="aboutvsi.html">About VSI</a><br />
+            <a href="/donate.html">Donate to VSI</a><br />
+            <a href="/contact.html">More Contact Info</a><br />
+            <a href="/aboutvsi.html">About VSI</a><br />
         </b>
     </div>
     <div id="copy">
         <img src="<?php print DIR_WEB_IMAGES . "/vst-simple-logo-bw.png"; ?>" />&copy;<?php print date("Y"); ?> Village Schools International
     </div>
 </div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6570764-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
 </body>
 </html>
